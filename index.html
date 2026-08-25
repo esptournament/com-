@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="bn" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESP TOUR | Official Tournament App</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+    <!-- Swiper CSS (For Auto-Slider with 3D Coverflow Effect) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+    <style>
+        body { font-family: 'Hind Siliguri', 'Poppins', sans-serif; }
+
+        @keyframes float-glow {
+            0%, 100% {
+                transform: translateY(0px) scale(1);
+                filter: drop-shadow(0 0 15px rgba(245, 158, 11, 0.4));
+            }
+            50% {
+                transform: translateY(-10px) scale(1.03);
+                filter: drop-shadow(0 0 28px rgba(245, 158, 11, 0.8));
+            }
+        }
+
+        .animate-logo {
+            animation: float-glow 4s ease-in-out infinite;
+        }
+
+        /* Custom Styling for Large Swiper Container */
+        .swiper-container-custom {
+            width: 100%;
+            padding-top: 20px;
+            padding-bottom: 50px;
+        }
+
+        .swiper-slide {
+            background-position: center;
+            background-size: cover;
+            width: 280px; /* Mobile View Width */
+            height: auto;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        @media (min-width: 768px) {
+            .swiper-slide {
+                width: 340px; /* Tablet & Desktop View Width (অনেক বড় সাইজ) */
+            }
+        }
+
+        /* Active slide highlight */
+        .swiper-slide-active {
+            border: 3px solid rgba(245, 158, 11, 0.8);
+            box-shadow: 0 20px 30px -10px rgba(245, 158, 11, 0.3);
+        }
+
+        /* Swiper Custom Dot Style */
+        .swiper-pagination-bullet {
+            background: #64748b;
+            opacity: 0.6;
+        }
+        .swiper-pagination-bullet-active {
+            background: #f59e0b !important;
+            opacity: 1;
+            width: 24px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 antialiased selection:bg-amber-500 selection:text-slate-950">
+
+    <!-- Header / Navbar -->
+    <header class="fixed top-0 left-0 right-0 bg-slate-900/90 backdrop-blur-md z-50 border-b border-slate-800">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <img src="https://i.ibb.co.com/xSfP5b97/1000026477.jpg" alt="ESP Tour Logo" class="h-9 w-9 object-contain drop-shadow">
+                <span class="text-xl font-bold tracking-wide text-white">ESP <span class="text-amber-500">Tournament</span></span>
+            </div>
+            <nav class="hidden md:flex space-x-6 text-sm font-semibold text-slate-300">
+                <a href="#features" class="hover:text-amber-400 transition">ফিচারসমূহ</a>
+                <a href="#screenshots" class="hover:text-amber-400 transition">অ্যাপ প্রিভিউ</a>
+                <a href="#matches" class="hover:text-amber-400 transition">ম্যাচ সিস্টেম</a>
+                <a href="#faq" class="hover:text-amber-400 transition">প্রশ্নোত্তর</a>
+            </nav>
+            <a href="#download" class="bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs md:text-sm font-bold px-4 py-2 rounded-lg transition shadow-lg shadow-amber-500/20">
+                ডাউনলোড
+            </a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="download" class="pt-32 pb-20 px-4 relative overflow-hidden bg-gradient-to-b from-slate-900 via-slate-950 to-slate-950">
+        <div class="max-w-5xl mx-auto text-center relative z-10">
+            
+            <div class="mb-6 flex justify-center">
+                <img src="https://i.ibb.co.com/xSfP5b97/1000026477.jpg" alt="ESP Tour Main Logo" class="w-36 h-36 md:w-44 md:h-44 object-contain animate-logo">
+            </div>
+
+            <span class="inline-block bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs md:text-sm px-4 py-1.5 rounded-full font-semibold mb-6">
+                🔥 ESP TOUR - Official App
+            </span>
+            
+            <h1 class="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-6">
+               একদিনে আপনি ৪০০ - ৫০০ টাকা <br><span class="text-amber-400">এমনিতেই ইনকাম করতে পারবেন</span>
+            </h1>
+            <p class="text-slate-400 text-base md:text-lg max-w-2xl mx-auto mb-8">
+                আপনার প্রিয় গেম খেলে আসল রিওয়ার্ড জেতার সুযোগ। বিশ্বস্ত এবং ইনস্ট্যান্ট ১v১ ও স্কোয়াড টুর্নামেন্ট সিস্টেম সহ দ্রুত পেমেন্ট উইথড্র সুবিধা!
+            </p>
+
+            <div class="max-w-md mx-auto">
+                <a id="downloadBtn" href="#" target="_blank" class="flex items-center justify-center space-x-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold py-4 px-8 rounded-2xl shadow-xl shadow-amber-500/20 transition duration-300 cursor-not-allowed opacity-50 text-lg">
+                    <i class="fa-brands fa-android text-2xl"></i>
+                    <span id="btnText">ডাউনলোড লিঙ্ক লোড হচ্ছে...</span>
+                </a>
+                <p class="text-xs text-slate-500 mt-3"><i class="fa-solid fa-shield-halved text-emerald-400"></i> ১০০% নিরাপদ ও সুরক্ষিত APK (Android)</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Counter Stats -->
+    <section class="py-10 bg-slate-900/50 border-y border-slate-800/80">
+        <div class="max-w-5xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+            <div class="p-4">
+                <h3 class="text-3xl font-extrabold text-amber-400">১০K+</h3>
+                <p class="text-slate-400 text-sm mt-1">সক্রিয় গেমার</p>
+            </div>
+            <div class="p-4">
+                <h3 class="text-3xl font-extrabold text-amber-400">১০০+</h3>
+                <p class="text-slate-400 text-sm mt-1">দৈনিক ম্যাচ</p>
+            </div>
+            <div class="p-4">
+                <h3 class="text-3xl font-extrabold text-amber-400">১০০%</h3>
+                <p class="text-slate-400 text-sm mt-1">নিরাপদ উইথড্র</p>
+            </div>
+            <div class="p-4">
+                <h3 class="text-3xl font-extrabold text-amber-400">২৪/৭</h3>
+                <p class="text-slate-400 text-sm mt-1">কাস্টমার সাপোর্ট</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Large Preview App Screenshots Section -->
+    <section id="screenshots" class="py-20 px-2 md:px-4 bg-slate-900/30 overflow-hidden">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-white mb-3">অ্যাপের স্ক্রিনশট প্রিভিউ</h2>
+                <p class="text-slate-400 text-sm">অ্যাপের ভেতরের লুক ও ইন্টারফেস নিচে সোয়াইপ করে দেখুন</p>
+            </div>
+
+            <!-- Full Width Coverflow Slider -->
+            <div class="swiper mySwiper swiper-container-custom">
+                <div class="swiper-wrapper" id="screenshotsContainer">
+                    <div class="swiper-slide text-center text-slate-500 py-20 bg-slate-900 border border-slate-800" id="loadingScreenshots">
+                        <i class="fa-solid fa-spinner fa-spin text-3xl text-amber-500 mb-2"></i>
+                        <p class="text-sm">স্ক্রিনশট লোড হচ্ছে...</p>
+                    </div>
+                </div>
+                <!-- Pagination Dots -->
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-white mb-3">অ্যাপের বিশেষ ফিচারসমূহ</h2>
+                <p class="text-slate-400">গেমিং অভিজ্ঞতা সহজ ও সেরা করতে অ্যাপে রয়েছে দারুণ সব অপশন</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-slate-900 border border-slate-800 p-8 rounded-2xl hover:border-amber-500/50 transition duration-300">
+                    <div class="w-12 h-12 bg-amber-500/10 text-amber-400 rounded-xl flex items-center justify-center text-xl mb-6">
+                        <i class="fa-solid fa-trophy"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">১v১ ও স্কোয়াড টুর্নামেন্ট</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        ১০ টাকা বা ২০ টাকা এন্ট্রি ফি দিয়ে সহজে ১v১ কাস্টম ম্যাচ কিংবা স্কোয়াড টুর্নামেন্টে অংশ নিন এবং প্রাইজপুল লুটে নিন।
+                    </p>
+                </div>
+
+                <div class="bg-slate-900 border border-slate-800 p-8 rounded-2xl hover:border-amber-500/50 transition duration-300">
+                    <div class="w-12 h-12 bg-amber-500/10 text-amber-400 rounded-xl flex items-center justify-center text-xl mb-6">
+                        <i class="fa-solid fa-wallet"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">সহজ অ্যাড মানি</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        বিকাশ বা নগদে টাকা পাঠিয়ে ১০ ডিজিটের ট্রানজেকশন আইডি (TrxID) সাবমিট করে দ্রুত ওয়ালেট রিচার্জ করতে পারবেন।
+                    </p>
+                </div>
+
+                <div class="bg-slate-900 border border-slate-800 p-8 rounded-2xl hover:border-amber-500/50 transition duration-300">
+                    <div class="w-12 h-12 bg-amber-500/10 text-amber-400 rounded-xl flex items-center justify-center text-xl mb-6">
+                        <i class="fa-solid fa-key"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">ইন-অ্যাপ রুম আইডি</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        ম্যাচ শুরু হওয়ার নির্দিষ্ট সময় পূর্বে অ্যাপেই কাস্টম রুম আইডি ও পাসওয়ার্ড শো করবে।
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How to Play Section -->
+    <section id="matches" class="py-20 bg-slate-900/40 px-4">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-white mb-3">কীভাবে টুর্নামেন্টে যোগ দেবেন?</h2>
+                <p class="text-slate-400">সহজ ৪টি ধাপে অংশ নিন</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 text-center">
+                <div class="bg-slate-900 p-6 rounded-xl border border-slate-800">
+                    <span class="w-8 h-8 bg-amber-500 text-slate-950 font-bold rounded-full flex items-center justify-center mx-auto mb-4">১</span>
+                    <h4 class="font-bold text-white mb-2">অ্যাপ ডাউনলোড</h4>
+                    <p class="text-slate-400 text-xs">আমাদের ওয়েবসাইট থেকে অ্যাপের APK ডাউনলোড করুন।</p>
+                </div>
+
+                <div class="bg-slate-900 p-6 rounded-xl border border-slate-800">
+                    <span class="w-8 h-8 bg-amber-500 text-slate-950 font-bold rounded-full flex items-center justify-center mx-auto mb-4">২</span>
+                    <h4 class="font-bold text-white mb-2">একাউন্ট রেজিস্টার</h4>
+                    <p class="text-slate-400 text-xs">আপনার তথ্য দিয়ে একটি নতুন একাউন্ট খুলুন।</p>
+                </div>
+
+                <div class="bg-slate-900 p-6 rounded-xl border border-slate-800">
+                    <span class="w-8 h-8 bg-amber-500 text-slate-950 font-bold rounded-full flex items-center justify-center mx-auto mb-4">৩</span>
+                    <h4 class="font-bold text-white mb-2">ম্যাচ জয়েন</h4>
+                    <p class="text-slate-400 text-xs">পছন্দের ম্যাচ সিলেক্ট করে ইন-গেম নেম দিয়ে জয়েন করুন।</p>
+                </div>
+
+                <div class="bg-slate-900 p-6 rounded-xl border border-slate-800">
+                    <span class="w-8 h-8 bg-amber-500 text-slate-950 font-bold rounded-full flex items-center justify-center mx-auto mb-4">৪</span>
+                    <h4 class="font-bold text-white mb-2">উইন & উইথড্র</h4>
+                    <p class="text-slate-400 text-xs">ম্যাচ জিতে পুরস্কারের টাকা সরাসরি বিকাশ বা নগদে তুলে নিন।</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-20 px-4">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-white mb-3">সাধারণ কিছু প্রশ্ন (FAQ)</h2>
+            </div>
+
+            <div class="space-y-4">
+                <div class="bg-slate-900 p-6 rounded-xl border border-slate-800">
+                    <h4 class="font-bold text-white mb-2"><i class="fa-solid fa-circle-question text-amber-400 mr-2"></i> কীভাবে টাকা জমা (Add Money) করব?</h4>
+                    <p class="text-slate-400 text-sm">অ্যাপের Add Money অপশনে দেওয়া বিকাশ/নগদ নম্বরে সেন্ড মানি করে ১০ ডিজিটের ট্রানজেকশন আইডি অ্যাপে সাবমিট করলে ব্যালেন্স অ্যাড হয়ে যাবে।</p>
+                </div>
+                <div class="bg-slate-900 p-6 rounded-xl border border-slate-800">
+                    <h4 class="font-bold text-white mb-2"><i class="fa-solid fa-circle-question text-amber-400 mr-2"></i> উইথড্র রিকোয়েস্টের টাকা পেতে কত সময় লাগে?</h4>
+                    <p class="text-slate-400 text-sm">সাধারণত ১ থেকে ৩ ঘণ্টার মধ্যে আপনার বিকাশ বা নগদ নম্বরে টাকা ক্যাশ-ইন / সেন্ড মানি করে দেওয়া হয়।</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-800 py-8 text-center text-slate-500 text-sm">
+        <p>&copy; 2026 ESP TOUR 2.0. All Rights Reserved.</p>
+    </footer>
+
+    <!-- Swiper JS Library -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <!-- Firebase Configuration & Dynamic Fetch Script -->
+    <script>
+        const firebaseConfig = {
+          apiKey: "AIzaSyDDXsJwKLlTU6LofulL1h7zbN23Qf_endM",
+          authDomain: "esp--ff.firebaseapp.com",
+          databaseURL: "https://esp--ff-default-rtdb.firebaseio.com",
+          projectId: "esp--ff",
+          storageBucket: "esp--ff.firebasestorage.app",
+          messagingSenderId: "364592477150",
+          appId: "1:364592477150:web:e26f823c1372f51bb1234f",
+          measurementId: "G-663DCHW8P2"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        const downloadBtn = document.getElementById('downloadBtn');
+        const btnText = document.getElementById('btnText');
+        const screenshotsContainer = document.getElementById('screenshotsContainer');
+
+        let swiperInstance = null;
+
+        // Fetch APK Download URL
+        database.ref('app_url').on('value', (snapshot) => {
+            const url = snapshot.val();
+            if (url) {
+                downloadBtn.href = url;
+                downloadBtn.classList.remove('cursor-not-allowed', 'opacity-50');
+                btnText.innerText = "ডাউনলোড অ্যাপ (APK)";
+            } else {
+                btnText.innerText = "ডাউনলোড লিঙ্ক পাওয়া যায়নি";
+            }
+        }, (error) => {
+            btnText.innerText = "ডাটাবেস কানেকশন এরর!";
+        });
+
+        // Fetch Screenshots Dynamically from Firebase & Initialize Swiper
+        database.ref('app_screenshots').on('value', (snapshot) => {
+            screenshotsContainer.innerHTML = "";
+            const data = snapshot.val();
+            
+            if (data) {
+                Object.keys(data).forEach(key => {
+                    const imgUrl = data[key];
+                    const slide = document.createElement('div');
+                    slide.className = "swiper-slide border-2 border-slate-800 bg-slate-900 shadow-2xl";
+                    slide.innerHTML = `<img src="${imgUrl}" alt="App Screenshot" class="w-full h-auto object-cover" loading="lazy">`;
+                    screenshotsContainer.appendChild(slide);
+                });
+
+                // Destroy previous Swiper instance if exists
+                if (swiperInstance) {
+                    swiperInstance.destroy(true, true);
+                }
+
+                // Initialize Swiper with 3D Coverflow Effect for Large View
+                swiperInstance = new Swiper(".mySwiper", {
+                    effect: "coverflow",
+                    grabCursor: true,
+                    centeredSlides: true,
+                    slidesPerView: "auto",
+                    coverflowEffect: {
+                        rotate: 0,
+                        stretch: 0,
+                        depth: 100,
+                        modifier: 2.5,
+                        slideShadows: false,
+                    },
+                    loop: true,
+                    autoplay: {
+                        delay: 3000,
+                        disableOnInteraction: false,
+                    },
+                    pagination: {
+                        el: ".swiper-pagination",
+                        clickable: true,
+                    },
+                });
+
+            } else {
+                screenshotsContainer.innerHTML = `<div class="swiper-slide text-center text-slate-500 py-10"><p>কোনো স্ক্রিনশট পাওয়া যায়নি।</p></div>`;
+            }
+        });
+    </script>
+</body>
+</html>
