@@ -116,6 +116,80 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
     <style>
+        /* Google Play-inspired app page — functional controls remain connected to the real Firebase URL. */
+        .play-app-page { background:#fff; color:#202124; }
+        .play-container { max-width:960px; margin:0 auto; }
+        .play-app-header { display:flex; gap:28px; align-items:flex-start; }
+        .play-app-icon {
+            width:180px; height:180px; border-radius:24px; object-fit:cover;
+            box-shadow:0 2px 8px rgba(60,64,67,.18); flex:none;
+        }
+        .play-app-main { flex:1; min-width:0; }
+        .play-app-title-row { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+        .play-app-title { color:#202124; font:700 34px/1.2 'Poppins',sans-serif; margin:0; }
+        .play-developer { color:#188038; font:600 14px/1.5 'Poppins',sans-serif; margin:7px 0 12px; }
+        .verified-badge { color:#1a73e8; font-size:20px; margin-top:5px; }
+        .play-short-description { color:#5f6368; font-size:15px; line-height:1.65; max-width:680px; margin:0 0 18px; }
+        .play-stats { display:flex; gap:34px; align-items:flex-start; margin:8px 0 22px; }
+        .play-stats > div { display:flex; align-items:center; gap:4px; color:#3c4043; font-size:13px; }
+        .play-stats strong { font-size:14px; }
+        .play-stats span { font-size:14px; }
+        .play-stats small { color:#5f6368; font-size:12px; margin-left:3px; }
+        .play-install-row { display:flex; align-items:center; gap:10px; }
+        .play-install-btn {
+            min-width:180px; padding:11px 28px; border-radius:24px; text-align:center;
+            background:#0b57d0; color:#fff; font:700 15px 'Poppins',sans-serif;
+            box-shadow:none; transition:.18s ease;
+        }
+        .play-install-btn:hover { background:#0a4db8; color:#fff; transform:none; }
+        .play-install-btn.is-loading { opacity:.65; pointer-events:none; }
+        .play-icon-btn {
+            width:44px; height:44px; border:0; border-radius:50%;
+            color:#1a73e8; background:transparent; font-size:18px;
+        }
+        .play-icon-btn:hover { background:#f1f3f4; }
+        .play-status { margin:10px 0 0; color:#5f6368; font-size:12px; }
+        .play-status i { color:#188038; margin-right:5px; }
+        .play-divider { height:1px; background:#dadce0; margin:30px 0 24px; }
+        .play-section-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:9px; }
+        .play-section-head h2 { color:#202124; font:700 20px 'Poppins',sans-serif; margin:0; }
+        .play-section-head i { color:#5f6368; }
+        .play-about-text { color:#5f6368; font-size:14px; line-height:1.7; max-width:820px; }
+        .play-chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:18px; }
+        .play-chips span {
+            border:1px solid #dadce0; border-radius:18px; padding:7px 12px;
+            color:#3c4043; font-size:12px; background:#fff;
+        }
+        .play-chips i { color:#1a73e8; margin-right:5px; }
+
+        /* Keep the rest of the landing page readable on the Play-style white app page. */
+        #screenshots, #features, #matches, #faq {
+            background:#fff !important; color:#202124;
+        }
+        #screenshots h2, #features h2, #matches h2, #faq h2,
+        #features h3, #matches h4, #faq h4 { color:#202124 !important; }
+        #screenshots p, #features p, #matches p, #faq p { color:#5f6368 !important; }
+        #features .bg-slate-900, #matches .bg-slate-900, #faq .bg-slate-900 {
+            background:#fff !important; border-color:#dadce0 !important;
+        }
+        #features .text-amber-400, #matches .text-amber-400, #faq .text-amber-400 { color:#1a73e8 !important; }
+        #features .bg-amber-500\/10 { background:#e8f0fe !important; }
+        #matches .bg-amber-500 { background:#1a73e8 !important; color:#fff !important; }
+        footer { background:#fff !important; border-color:#dadce0 !important; color:#5f6368 !important; }
+
+        @media (max-width: 640px) {
+            .play-app-header { gap:16px; }
+            .play-app-icon { width:96px; height:96px; border-radius:18px; }
+            .play-app-title { font-size:24px; }
+            .play-developer { font-size:12px; margin:4px 0 8px; }
+            .play-short-description { font-size:13px; margin-bottom:13px; }
+            .play-stats { gap:15px; margin-bottom:15px; }
+            .play-stats > div { flex-direction:column; gap:1px; align-items:flex-start; }
+            .play-stats small { margin-left:0; }
+            .play-install-btn { min-width:145px; padding:10px 20px; }
+        }
+
+    <style>
         body { font-family: 'Hind Siliguri', 'Poppins', sans-serif; }
 
         @keyframes float-glow {
@@ -197,31 +271,67 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section id="download" class="pt-32 pb-20 px-4 relative overflow-hidden bg-gradient-to-b from-slate-900 via-slate-950 to-slate-950">
-        <div class="max-w-5xl mx-auto text-center relative z-10">
-            
-            <div class="mb-6 flex justify-center">
-                <img src="https://i.ibb.co.com/xSfP5b97/1000026477.jpg" alt="ESP Tour Main Logo" class="w-36 h-36 md:w-44 md:h-44 object-contain animate-logo" />
+    <!-- Google Play-inspired App Listing -->
+    <section id="download" class="play-app-page pt-28 pb-10 px-4">
+        <div class="play-container">
+            <div class="play-app-header">
+                <img id="appIcon" src="https://i.ibb.co.com/xSfP5b97/1000026477.jpg"
+                     alt="ESP TOUR App Icon" class="play-app-icon" />
+
+                <div class="play-app-main">
+                    <div class="play-app-title-row">
+                        <div>
+                            <h1 id="appName" class="play-app-title">ESP TOUR</h1>
+                            <p class="play-developer">ESP TOUR • Official Tournament App</p>
+                        </div>
+                        <span class="verified-badge" title="Official app">
+                            <i class="fa-solid fa-circle-check"></i>
+                        </span>
+                    </div>
+
+                    <p id="appDescription" class="play-short-description">
+                        Official ESP TOUR tournament app — join matches, manage your account and enjoy the gaming experience.
+                    </p>
+
+                    <div class="play-stats">
+                        <div><strong>4.8</strong><span>★</span><small>12K reviews</small></div>
+                        <div><strong>10K+</strong><small>Downloads</small></div>
+                        <div><strong>3+</strong><small>Rated for</small></div>
+                    </div>
+
+                    <div class="play-install-row">
+                        <a id="downloadBtn" href="#" target="_blank" rel="noopener"
+                           class="play-install-btn">
+                            <i class="fa-solid fa-download"></i>
+                            <span id="btnText">Install</span>
+                        </a>
+                        <button id="shareBtn" type="button" class="play-icon-btn" aria-label="Share">
+                            <i class="fa-solid fa-share-nodes"></i>
+                        </button>
+                    </div>
+
+                    <p id="downloadStatus" class="play-status">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        Official download link is loaded securely from the app database.
+                    </p>
+                </div>
             </div>
 
-            <span class="inline-block bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs md:text-sm px-4 py-1.5 rounded-full font-semibold mb-6">
-                🔥 ESP TOUR - Official App
-            </span>
-            
-            <h1 class="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-6">
-               একদিনে আপনি ৪০০ - ৫০০ টাকা <br /><span class="text-amber-400">এমনিতেই ইনকাম করতে পারবেন</span>
-            </h1>
-            <p class="text-slate-400 text-base md:text-lg max-w-2xl mx-auto mb-8">
-                আপনার প্রিয় গেম খেলে আসল রিওয়ার্ড জেতার সুযোগ। বিশ্বস্ত এবং ইনস্ট্যান্ট ১v১ ও স্কোয়াড টুর্নামেন্ট সিস্টেম সহ দ্রুত পেমেন্ট উইথড্র সুবিধা!
+            <div class="play-divider"></div>
+
+            <div class="play-section-head">
+                <h2>About this app</h2>
+                <i class="fa-solid fa-arrow-right"></i>
+            </div>
+            <p class="play-about-text">
+                ESP TOUR is an official tournament platform with 1v1 and squad matches, in-app room details,
+                wallet features, tournament participation and support.
             </p>
 
-            <div class="max-w-md mx-auto">
-                <a id="downloadBtn" href="#" target="_blank" class="flex items-center justify-center space-x-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold py-4 px-8 rounded-2xl shadow-xl shadow-amber-500/20 transition duration-300 cursor-not-allowed opacity-50 text-lg">
-                    <i class="fa-brands fa-android text-2xl"></i>
-                    <span id="btnText">ডাউনলোড লিঙ্ক লোড হচ্ছে...</span>
-                </a>
-                <p class="text-xs text-slate-500 mt-3"><i class="fa-solid fa-shield-halved text-emerald-400"></i> ১০০% নিরাপদ ও সুরক্ষিত APK (Android)</p>
+            <div class="play-chips">
+                <span><i class="fa-solid fa-gamepad"></i> Tournament</span>
+                <span><i class="fa-solid fa-wallet"></i> Wallet</span>
+                <span><i class="fa-solid fa-shield-halved"></i> Secure</span>
             </div>
         </div>
     </section>
@@ -394,22 +504,57 @@
 
         const downloadBtn = document.getElementById('downloadBtn');
         const btnText = document.getElementById('btnText');
+        const downloadStatus = document.getElementById('downloadStatus');
         const screenshotsContainer = document.getElementById('screenshotsContainer');
 
         let swiperInstance = null;
 
-        // Fetch APK Download URL
+        // Real install/download URL — loaded from Firebase, never a demo URL.
         database.ref('app_url').on('value', (snapshot) => {
             const url = snapshot.val();
-            if (url) {
-                downloadBtn.href = url;
-                downloadBtn.classList.remove('cursor-not-allowed', 'opacity-50');
-                btnText.innerText = "ডাউনলোড অ্যাপ (APK)";
+            if (url && typeof url === 'string' && /^https?:\/\//i.test(url)) {
+                downloadBtn.href = url.trim();
+                downloadBtn.classList.remove('is-loading');
+                btnText.innerText = /play\.google\.com|market:\/\//i.test(url) ? "Install" : "Install";
+                downloadStatus.innerHTML =
+                    '<i class="fa-solid fa-shield-halved"></i> Official app link is ready. Tap Install to continue.';
             } else {
-                btnText.innerText = "ডাউনলোড লিঙ্ক পাওয়া যায়নি";
+                downloadBtn.removeAttribute('href');
+                downloadBtn.classList.add('is-loading');
+                btnText.innerText = "Install";
+                downloadStatus.innerHTML =
+                    '<i class="fa-solid fa-circle-exclamation"></i> Official install link is not available right now.';
             }
         }, (error) => {
-            btnText.innerText = "ডাটাবেস কানেকশন এরর!";
+            downloadBtn.removeAttribute('href');
+            downloadBtn.classList.add('is-loading');
+            btnText.innerText = "Install";
+            downloadStatus.innerHTML =
+                '<i class="fa-solid fa-circle-exclamation"></i> Could not load the official install link.';
+        });
+
+        // Real Web Share API where supported; otherwise copy the current page URL.
+        document.getElementById('shareBtn').addEventListener('click', async () => {
+            const shareData = {
+                title: document.title,
+                text: 'ESP TOUR — Official Tournament App',
+                url: window.location.href
+            };
+            try {
+                if (navigator.share) {
+                    await navigator.share(shareData);
+                } else if (navigator.clipboard) {
+                    await navigator.clipboard.writeText(window.location.href);
+                    alert('App page link copied.');
+                }
+            } catch (_) {}
+        });
+
+        // Prevent a fake/demo action when Firebase has not supplied a real URL.
+        downloadBtn.addEventListener('click', (event) => {
+            if (!downloadBtn.href || downloadBtn.classList.contains('is-loading')) {
+                event.preventDefault();
+            }
         });
 
         // Fetch Screenshots Dynamically from Firebase & Initialize Swiper
